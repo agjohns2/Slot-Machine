@@ -1,0 +1,165 @@
+/**
+ *
+ *
+ * @author Andrew Johnson
+ * CSC 116, summer 2015
+ * project 6, SlotMachine
+ *
+ */
+ 
+import java.util.*;
+ 
+/** 
+ * This class represents the slot machine as three Reel objects which each contain five Symbols. 
+ * The class takes instructions from the GUI to turn the Reel's, determine if there is a winning outcome, 
+ * and if so, what the reward is
+ *
+ * @param BET_AMOUNT amount that the user will bet 
+ * @param ARRAY_LENGTH length of array of reels
+ * @param HELD_TOKENS default, 50, token amount set during construction of the slot machine object
+ * @param reelArray array of reel objects
+ * @param heldTokens amount of tokens owned by the user
+ * @param status status of the game
+ * @param rand random object
+ *
+ */
+public class SlotMachine {
+
+    public static final int BET_AMOUNT = 5; 
+    public static final int ARRAY_LENGTH = 3;
+    public static final int HELD_TOKENS = 50;
+    public static final int UPWARD_ROTATION = -1;
+    public static final int DOWNWARD_ROTATION = 1;
+
+    private Reel[] reelArray = new Reel[ARRAY_LENGTH];
+    private int heldTokens;
+    private String status;
+    private Random rand;
+
+    /**
+     * this method constructs a random number and rotates the reel
+     *
+     *
+     * @param seed
+     */     
+    public SlotMachine(int seed) {
+        
+        this.heldTokens = HELD_TOKENS;
+        
+        for(int i = 0; i < ARRAY_LENGTH; i++) {
+            if(i == 1){
+                reelArray[i] = new Reel(UPWARD_ROTATION);
+            }else { 
+                reelArray[i] = new Reel(DOWNWARD_ROTATION);
+            }
+        }
+        
+        this.status = "Pull Lever To Begin";
+        
+        if(seed < 0) {
+            this.rand = new Random();      
+        }else {
+            this.rand = new Random(seed);
+        }
+ 
+    }
+    
+    /**
+     *
+     * simulates inserting BET_AMOUNT of "tokens" into the machine to play the game, under the condition that 
+     * the player owns at least BET_AMOUNT of tokens to wager
+     */
+    public void makeBet() {
+        
+        if(heldTokens >= BET_AMOUNT) {
+            heldTokens -= BET_AMOUNT;
+        }
+      
+    }
+    
+    /**
+     * returns the number of tokens owned by the player
+     *
+     * @return String return number of tokens owned by the player
+     */ 
+    public int getNumberOfTokens() {
+        
+        return heldTokens;
+        
+    }
+     
+    /**
+     * returns status of the game
+     *
+     * @return String return game status
+     */     
+    public String getStatus() {
+        
+        return status;
+      
+    }
+    
+    /**
+     * gets the current index of a reel at a given index in this reelArray
+     *
+     *
+     */
+    public int getCurrentIndexOfReel(int index) {
+        
+        return reelArray[index].getCurrentIndex();
+       
+    }
+    
+    /**
+     * constructs a random integer from 0 to 2 and turns the reel at that index
+     *
+     */
+    public void turnReel() {
+        
+        int randomReel = rand.nextInt(ARRAY_LENGTH);
+        
+        reelArray[randomReel].turn();
+              
+    }
+    
+    /**
+     * this method tests how many, if any, reels have identical symbols. if all three symbols
+     * match, the player wins five times the symbol value. if two of three match, the player
+     * wins two times the symbol value. if no symbols match, the player doesn't win anything
+     *
+     */
+    public void determineOutcome() {
+        
+        if(reelArray[0].getCurrentSymbol().equals(reelArray[1].getCurrentSymbol()) &&
+           reelArray[0].getCurrentSymbol().equals(reelArray[1 + 1].getCurrentSymbol())) {
+            
+            this.heldTokens += BET_AMOUNT * reelArray[0].getCurrentSymbol().getValue();
+            
+            this.status = ARRAY_LENGTH + " " + reelArray[0].getCurrentSymbol().getName() + "! " +
+                          (BET_AMOUNT * reelArray[0].getCurrentSymbol().getValue()) + " Tokens!";
+        
+        
+        }else if(reelArray[0].getCurrentSymbol().equals(reelArray[1].getCurrentSymbol()) ||    
+            reelArray[0].getCurrentSymbol().equals(reelArray[1 + 1].getCurrentSymbol())) {
+                
+            this.heldTokens += 2 * reelArray[0].getCurrentSymbol().getValue();
+            
+            this.status = ARRAY_LENGTH + " " + reelArray[0].getCurrentSymbol().getName() + "! " +
+                          (2 * reelArray[0].getCurrentSymbol().getValue()) + " Tokens!";
+ 
+ 
+        }else if(reelArray[1].getCurrentSymbol().equals(reelArray[1 + 1].getCurrentSymbol())) {
+            
+            this.heldTokens += 2 * reelArray[1].getCurrentSymbol().getValue();
+            
+            this.status = ARRAY_LENGTH + " " + reelArray[1].getCurrentSymbol().getName() + "! " +
+                          (2 * reelArray[1].getCurrentSymbol().getValue()) + " Tokens!";
+    
+    
+        }else {
+            this.status = "You Lose";
+            
+        }
+     
+    }
+}
