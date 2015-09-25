@@ -1,0 +1,118 @@
+/**
+ *
+ *
+ * @author Andrew Johnson
+ * CSC 116, summer 2015
+ * project 6, Reel
+ *
+ */
+ 
+ 
+/**
+ * The Reel class represents a reel of the slot machine. It will use an array of 5 Symbol objects.
+ *
+ * @param NUMBER_OF_SYMBOLS number of symbols contained in a reel
+ * @param SYMBOL_NAMES list of strings assigned to each symbol in a reel
+ * @param SYMBOL_VALUES list of integers assigned to each symbol in a reel
+ * @param symbolArray array of symbol objects
+ * @param currentIndex index number of the current symbol object in symbolArray
+ *                     The Symbol at the current index is the one that will be 
+ *                     displayed by the slot machine.
+ * @param direction An int that represents the direction that the Reel 
+ *                      is spinning (either 1 for downward, or -1 for upward)
+ *
+ */
+public class Reel {
+
+    public static final int NUMBER_OF_SYMBOLS = 5;
+  
+    public static final String[] SYMBOL_NAMES = {"State Symbols", "Hearts", "Bars", "Cherries", "Sevens"};
+    public static final int[] SYMBOL_VALUES = {10, 25, 50, 75, 100};
+    
+    private Symbol[] symbolArray;
+    private int currentIndex;
+    private int direction;
+
+    /**
+     * creates an array of Symbol objects and assigns each index an individual Symbol object
+     * receives a spin direction and assigns that direction to this direction 
+     * sets current index to 0
+     *
+     *
+     * @param direction 
+     */
+    public Reel(int direction) {
+        
+        this.symbolArray = new Symbol[NUMBER_OF_SYMBOLS];
+          
+        for(int i = 0; i < NUMBER_OF_SYMBOLS; i++) {
+            symbolArray[i] = new Symbol(SYMBOL_NAMES[i], SYMBOL_VALUES[i]);
+        }
+        
+        this.direction = direction;
+        
+        this.currentIndex = 0;
+        
+    }
+    
+    /**
+     * gets current symbol at current index of this reel
+     *
+     *
+     * @param Symbol returns current symbol at current index of this reel 
+     */
+    public Symbol getCurrentSymbol() {
+        
+        return symbolArray[currentIndex];
+    
+    }
+    
+    /**
+     * gets current index of this reel
+     *
+     *
+     * @param int returns current index of this reel 
+     */
+    public int getCurrentIndex() {
+        
+        return currentIndex;
+    
+    }
+
+    /**
+     * rotates the reel by adding the direction integer to the current index
+     * if the current index is at either range of the array, it is reset to 
+     * the opposite end of the range so that it may continue to rotate
+     * 
+     */
+    public void turn() {
+        
+        if(currentIndex == 0 && direction < 0) {
+            this.currentIndex = NUMBER_OF_SYMBOLS - 1;
+        }else if(currentIndex == NUMBER_OF_SYMBOLS - 1 && direction > 0) {
+            this.currentIndex = 0;
+        }else {
+            this.currentIndex += direction;
+        }
+
+    }
+
+    /**
+     * this method returns a string of the array of symbol objects 
+     *
+     *
+     * @param String returns a string of the array of symbol objects 
+     */
+    public String toString() {
+        
+        return "Current index: " + currentIndex + "\n" +
+               "Current symbol: " + getCurrentSymbol() + "\n" +
+               "Symbol 0: " + symbolArray[0].toString() + "\n" +
+               "Symbol 1: " + symbolArray[1].toString() + "\n" +
+               "Symbol 2: " + symbolArray[2].toString() + "\n" +
+               "Symbol 3: " + symbolArray[NUMBER_OF_SYMBOLS - 2].toString() + "\n" +
+               "Symbol 4: " + symbolArray[NUMBER_OF_SYMBOLS - 1].toString() + "\n";
+
+    }
+
+}
