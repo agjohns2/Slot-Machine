@@ -1,0 +1,81 @@
+/**
+ *
+ * @author Andrew Johnson
+ * CSC 116, summer 2015
+ * project 6, Symbol class
+ */
+
+/**
+ * this class represents the symbol object. as a constituent of the reel object, the 
+ * symbol object possesses a name and a value, e.g. cherries with a value of x
+ * 
+ */
+public class Symbol {
+    
+    private String name;
+    private int value;
+    
+    /**
+     * constructs symbol object
+     *
+     * @param name symbol object name
+     * @param value value given to the symbol object
+     *
+     */
+    public Symbol(String name, int value) {
+        
+        this.name = name;
+        this.value = value;
+
+    }
+    
+    /**
+     * returns name
+     * 
+     * @return String name
+     */
+    public String getName() {
+        
+        return name;
+      
+    }
+    
+    /**
+     * returns value
+     * 
+     * @return int value
+     */
+    public int getValue() {
+        
+        return value;
+        
+    }
+ 
+    /**
+     * tests if an object is identical to this symbol object
+     *
+     * @param o object to be compared with this object
+     * @return true if if and only if the Object o is a Symbol AND the name and value 
+     *              of the Symbol passed as a parameter is the same as the name and value of this Symbol object.
+     * @return false if object does not satisfy conditions listed above
+     */
+    public boolean equals(Object o) {
+
+        Symbol other = (Symbol) o;
+    
+        return this.name.equals(other.name) && this.value == other.value;
+
+    }
+ 
+    /**
+     * converts symbol to string and returns that string
+     *
+     * @return String String representation of the symbol
+     */
+    public String toString() {
+        
+        return name + " " + value;
+
+    }
+ 
+}
